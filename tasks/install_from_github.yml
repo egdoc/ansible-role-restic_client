@@ -1,0 +1,46 @@
+---
+- name: Check if restic is installed ({{ restic_client_version }})
+  ansible.builtin.stat:
+    path: /usr/local/bin/restic_{{ restic_client_version }}
+  register: restic_binary
+
+- name: Install restic binary
+  when: not restic_binary.stat.exists
+  block:
+    - name: Download compressed restic_{{ restic_client_version }}
+      ansible.builtin.get_url:
+        url: '{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/restic_{{ restic_client_version }}_linux_amd64.bz2'
+        checksum: 'sha256:{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/SHA256SUMS'
+        dest: /tmp/restic_{{ restic_client_version }}.bz2
+        owner: root
+        group: root
+        mode: '0644'
+
+    - name: Decompress restic ({{ restic_client_version }})
+      ansible.builtin.command:
+        cmd: bzip2 --decompress /tmp/restic_{{ restic_client_version }}.bz2
+        creates: /tmp/restic_{{ restic_client_version }}
+
+    - name: Ensure restic is installed ({{ restic_client_version }})
+      ansible.builtin.copy:
+        src: /tmp/restic_{{ restic_client_version }}
+        dest: /usr/local/bin/restic_{{ restic_client_version }}
+        remote_src: true
+        owner: root
+        group: root
+        mode: '0755'
+
+    - name: Ensure temporary file is removed
+      ansible.builtin.file:
+        path: /tmp/restic_{{ restic_client_version }}
+        state: absent
+
+
+- name: Ensure restic is a link to restic_{{ restic_client_version }}
+  ansible.builtin.file:
+    src: restic_{{ restic_client_version }}
+    dest: /usr/local/bin/restic
+    state: link
+    owner: root
+    group: root
+    mode: '0755'

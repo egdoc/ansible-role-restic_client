@@ -1,0 +1,11 @@
+---
+- name: Ensure restic is installed (native package)
+  ansible.builtin.package:
+    name: restic
+    state: present
+  when: restic_client_install_method == "package"
+
+- name: Ensure restic is installed (github)
+  ansible.builtin.import_tasks:
+    file: install_from_github.yml
+  when: restic_client_install_method == "github"

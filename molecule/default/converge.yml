@@ -1,0 +1,12 @@
+---
+- name: Converge
+  hosts: all
+  tasks:
+    - name: Ensure bzip2 is installed
+      ansible.builtin.package:
+        name: bzip2
+        state: present
+
+    - name: Setup restic client
+      ansible.builtin.import_role:
+        name: egdoc.restic_client

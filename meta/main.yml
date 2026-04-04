@@ -1,0 +1,12 @@
+galaxy_info:
+  author: Egidio Docile
+  namespace: egdoc
+  role_name: restic_client
+  description: Ansible role to install restic on Linux
+  license: GPLv3
+  min_ansible_version: '2.1'
+  galaxy_tags:
+    - backup
+    - restic
+
+dependencies: []
