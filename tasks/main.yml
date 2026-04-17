@@ -1,11 +1,13 @@
 ---
 - name: Check if restic is installed ({{ restic_client_version }})
-  ansible.builtin.stat:
-    path: /usr/local/bin/restic_{{ restic_client_version }}
-  register: restic_binary
+  ansible.builtin.command:
+    cmd: /usr/local/bin/restic version
+  ignore_errors: true
+  changed_when: false
+  register: check_restic_version
 
 - name: Install restic binary
-  when: not restic_binary.stat.exists
+  when: check_restic_version is failed or restic_client_version not in check_restic_version.stdout
   block:
     - name: Download compressed restic_{{ restic_client_version }}
       ansible.builtin.get_url:
@@ -24,7 +26,7 @@
     - name: Ensure restic is installed ({{ restic_client_version }})
       ansible.builtin.copy:
         src: /tmp/restic_{{ restic_client_version }}
-        dest: /usr/local/bin/restic_{{ restic_client_version }}
+        dest: /usr/local/bin/restic
         remote_src: true
         owner: root
         group: root
@@ -34,13 +36,3 @@
       ansible.builtin.file:
         path: /tmp/restic_{{ restic_client_version }}
         state: absent
-
-
-- name: Ensure restic is a link to restic_{{ restic_client_version }}
-  ansible.builtin.file:
-    src: restic_{{ restic_client_version }}
-    dest: /usr/local/bin/restic
-    state: link
-    owner: root
-    group: root
-    mode: '0755'
