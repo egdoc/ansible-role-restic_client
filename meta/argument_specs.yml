@@ -3,20 +3,9 @@ argument_specs:
   main:
     options:
       restic_client_version:
-        description: |
-          Restic version to install. This matters only
-          when using "github" as install method.
+        description: Restic version to install. 
         type: str
         default: 0.18.0
-      restic_client_install_method:
-        description: |
-          Whether to install restic directly from GitHub
-          or as a native distribution package (if available).
-        type: str
-        choices:
-          - package
-          - github
-        default: github
       restic_client_repo_url:
         description: Restic repository URL.
         type: str
