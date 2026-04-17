@@ -21,7 +21,6 @@
     - name: Decompress restic ({{ restic_client_version }})
       ansible.builtin.command:
         cmd: bzip2 --decompress /tmp/restic_{{ restic_client_version }}.bz2
-        creates: /tmp/restic_{{ restic_client_version }}
 
     - name: Ensure restic is installed ({{ restic_client_version }})
       ansible.builtin.copy:
