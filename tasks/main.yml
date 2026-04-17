@@ -11,7 +11,7 @@
   block:
     - name: Download compressed restic_{{ restic_client_version }}
       ansible.builtin.get_url:
-        url: '{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/restic_{{ restic_client_version }}_linux_amd64.bz2'
+        url: '{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/restic_{{ restic_client_version }}_{{ restic_client_platform }}_{{ restic_client_arch }}.bz2'
         checksum: 'sha256:{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/SHA256SUMS'
         dest: /tmp/restic_{{ restic_client_version }}.bz2
         owner: root

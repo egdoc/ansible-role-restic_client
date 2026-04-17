@@ -6,6 +6,14 @@ argument_specs:
         description: Restic version to install. 
         type: str
         default: 0.18.0
+      restic_client_platform:
+        description: Restic client platform.
+        type: str
+        default: linux
+      restic_client_arch:
+        description: Restic client architecture.
+        type: str
+        default: amd64
       restic_client_repo_url:
         description: Restic repository URL.
         type: str

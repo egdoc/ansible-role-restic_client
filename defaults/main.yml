@@ -1,2 +1,4 @@
 ---
 restic_client_version: 0.18.0
+restic_client_platform: linux
+restic_client_arch: amd64
