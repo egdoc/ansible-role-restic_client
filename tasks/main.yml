@@ -1,5 +1,5 @@
 ---
-- name: Check if restic is installed ({{ restic_client_version }})
+- name: Check if restic is installed
   ansible.builtin.command:
     cmd: /usr/local/bin/restic version
   ignore_errors: true
@@ -9,7 +9,7 @@
 - name: Install restic binary
   when: check_restic_version is failed or restic_client_version not in check_restic_version.stdout
   block:
-    - name: Download compressed restic_{{ restic_client_version }}
+    - name: Download compressed restic
       ansible.builtin.get_url:
         url: '{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/restic_{{ restic_client_version }}_{{ restic_client_platform }}_{{ restic_client_arch }}.bz2'
         checksum: 'sha256:{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/SHA256SUMS'
@@ -18,11 +18,11 @@
         group: root
         mode: '0644'
 
-    - name: Decompress restic ({{ restic_client_version }})
+    - name: Decompress restic
       ansible.builtin.command:
         cmd: bzip2 --decompress /tmp/restic_{{ restic_client_version }}.bz2
 
-    - name: Ensure restic is installed ({{ restic_client_version }})
+    - name: Ensure restic is installed
       ansible.builtin.copy:
         src: /tmp/restic_{{ restic_client_version }}
         dest: /usr/local/bin/restic
