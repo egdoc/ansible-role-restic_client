@@ -11,16 +11,19 @@
   block:
     - name: Download compressed restic
       ansible.builtin.get_url:
-        url: '{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/restic_{{ restic_client_version }}_{{ restic_client_platform }}_{{ restic_client_arch }}.bz2'
+        url: '{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/{{ restic_client_archive }}'
         checksum: 'sha256:{{ restic_client_repo_url }}/releases/download/v{{ restic_client_version }}/SHA256SUMS'
         dest: /tmp/restic_{{ restic_client_version }}.bz2
         owner: root
         group: root
         mode: '0644'
+      vars:
+        restic_client_archive: restic_{{ restic_client_version }}_{{ restic_client_platform }}_{{ restic_client_arch }}.bz2
 
     - name: Decompress restic
       ansible.builtin.command:
         cmd: bzip2 --decompress /tmp/restic_{{ restic_client_version }}.bz2
+      changed_when: false
 
     - name: Ensure restic is installed
       ansible.builtin.copy:

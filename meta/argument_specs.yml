@@ -3,7 +3,7 @@ argument_specs:
   main:
     options:
       restic_client_version:
-        description: Restic version to install. 
+        description: Restic version to install.
         type: str
         default: 0.18.0
       restic_client_platform:
