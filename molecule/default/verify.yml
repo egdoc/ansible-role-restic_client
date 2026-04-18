@@ -1,0 +1,13 @@
+---
+- name: Verify
+  hosts: all
+  tasks:
+    - name: Get installed restic version
+      ansible.builtin.command:
+        cmd: /usr/local/bin/restic version
+      changed_when: false
+      register: restic_check_version
+
+    - name: Ensure restic version installed is correct
+      ansible.builtin.assert:
+        that: '"0.18.0" in restic_check_version.stdout'
