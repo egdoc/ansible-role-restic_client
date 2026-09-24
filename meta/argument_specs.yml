@@ -17,7 +17,7 @@ argument_specs:
       restic_client_sha256sum:
         description: |
           Restic binary sha256sum. This is the sha256sum
-          of the default restic client version installed by 
+          of the default restic client version installed by
           this role (0.18.0). If the version changes the sha256sum
           must also be changed.
       restic_client_repo_url:
