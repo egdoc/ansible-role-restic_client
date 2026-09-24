@@ -1,13 +1,18 @@
 ---
 - name: Check if restic is installed
+  ansible.builtin.stat:
+    path: /usr/local/bin/restic
+  register: restic_binary
+
+- name: Check restic version
   ansible.builtin.command:
     cmd: /usr/local/bin/restic version
-  ignore_errors: true
   changed_when: false
   register: check_restic_version
+  when: restic_binary.stat.exists
 
 - name: Install restic binary
-  when: check_restic_version is failed or restic_client_version not in check_restic_version.stdout
+  when: not restic_binary.stat.exists or restic_client_version not in check_restic_version.stdout
   block:
     - name: Download compressed restic
       ansible.builtin.get_url:
