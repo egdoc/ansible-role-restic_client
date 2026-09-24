@@ -39,6 +39,7 @@
         group: root
         mode: '0755'
 
+  always:
     - name: Ensure temporary file is removed
       ansible.builtin.file:
         path: /tmp/restic_{{ restic_client_version }}
